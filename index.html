@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Digital Instrument!</title>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+        #handshake {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgb(255, 255, 255);
+			color: rgb(206, 0, 189);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			font-family: sans-serif;
+			cursor: pointer;
+			z-index: 99999;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+            animation: fade 1s forwards;
+        }
+
+        @keyframes fade {
+        0% {opacity: 0.8; transform: translate(-50%, -50%) scale(1);
+        }
+
+        100% {opacity: 0; transform: translate(-50%, -80%) scale(1.5);
+        }
+        }
+    
+	</style>
+    <script src="https://unpkg.com/tone"></script>
+
+</head>
+
+<body>
+	
+	<div id="handshake">
+		DRAW with SOUND
+	</div>
+
+<script>
+	let handshake = document.querySelector("#handshake");
+		handshake.addEventListener('click', function() {
+		Tone.start();
+		handshake.style.display = 'none';
+		});
+
+    let synth = new Tone.Synth().toDestination();
+
+    document.addEventListener("mousemove", function (e) {
+    let note = Math.random() * 200 + 300;
+    synth.triggerAttackRelease(note, "20n");
+
+    let bubble = document.createElement("div");
+    bubble.classList.add("bubble");
+
+    let color = Math.random() * 360;
+    bubble.style.backgroundColor = `hsl(${color}, 100%, 60%)`;
+
+    bubble.style.left = e.clientX + "px";
+    bubble.style.top = e.clientY + "px";
+
+    document.body.appendChild(bubble);
+
+    SetTimeout(function () {
+    bubble.remove();
+    }, 1000);
+
+    });
+
+</script>
+</body>
+</html>
